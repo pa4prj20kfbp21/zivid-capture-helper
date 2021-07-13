@@ -130,3 +130,6 @@ dmypy.json
 
 # Output files/folders
 [0-9]*/
+
+# Pycharm config.
+.idea/
