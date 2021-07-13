@@ -2,7 +2,8 @@
 from zivid import Application
 import cv2
 
-from zivid.capture_assistant import SuggestSettingsParameters, suggest_settings
+from pathlib import Path
+from yaml_extract import get_settings_from_yaml
 
 from datetime import date, timedelta
 from os import mkdir
@@ -12,23 +13,19 @@ if __name__ == '__main__':
     try:
         camera = app.connect_camera()
 
-        ambient_frequency_option = 5
-        ambient_frequency_options = ["none", "hz50", "hz60"]
-        while ambient_frequency_option not in range(0, 3):
-            try:
-                ambient_frequency_option = int(
-                    input("Select ambient light adaption (0 for none, 1 for 50Hz, 2 for 60Hz): "))
-                if ambient_frequency_option not in range(0, 3):
-                    raise ValueError("Out of range value!")
-            except ValueError:
-                print("Invalid input!, please choose again.")
-                ambient_frequency_option = 5
+        # ambient_frequency_option = 5
+        # ambient_frequency_options = ["none", "hz50", "hz60"]
+        # while ambient_frequency_option not in range(0, 3):
+        #     try:
+        #         ambient_frequency_option = int(
+        #             input("Select ambient light adaption (0 for none, 1 for 50Hz, 2 for 60Hz): "))
+        #         if ambient_frequency_option not in range(0, 3):
+        #             raise ValueError("Out of range value!")
+        #     except ValueError:
+        #         print("Invalid input!, please choose again.")
+        #         ambient_frequency_option = 5
 
-        capture_assistant_params = SuggestSettingsParameters(
-            max_capture_time=timedelta(milliseconds=1200),
-            ambient_light_frequency=ambient_frequency_options[ambient_frequency_option])
-
-        settings = suggest_settings(camera, capture_assistant_params)
+        settings = get_settings_from_yaml(Path("./settings.yml"))
 
         capture_number = 0
         position_number = 1
